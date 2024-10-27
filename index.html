@@ -12,18 +12,19 @@
 <body>
     <main class="calculator">
         <div class="display">
-            <div class="operand-previous"><span id="operand-previous">Предыдущая операция</span></div>
-            <div class="operand-current"><span id="operand-current">Текущая операция</span></div>
-            <div class="result"><span id="result">Результат</span></div>
+            <div class="operand-previous"><span id="operand-previous"></span></div>
+            <div class="result"><span id="result-previous"></span></div>
+            <div class="operand-current"><span id="operand-current"></span></div>
+            <div class="result"><span id="result"></span></div>
             <div class="display-button">
-                <button type="button" id="delete" onclick="">
+                <button type="button">
                     <svg class="hist" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path fill-rule="evenodd" clip-rule="evenodd"
                             d="M10 2V0H9L8.73464 0.00383711C3.88681 0.144209 0 4.1182 0 9C0 13.9706 4.02944 18 9 18C13.9706 18 18 13.9706 18 9C18 6.74668 17.1661 4.62761 15.7089 3.00024L18 3V1H12V7H14L14.0017 4.10253C15.2694 5.39589 16 7.13759 16 9C16 12.866 12.866 16 9 16C5.13401 16 2 12.866 2 9C2 5.13401 5.13401 2 9 2H10ZM10 8.58579V4H8V9.41421L10.7929 12.2071L12.2071 10.7929L10 8.58579Z"
                             fill="#3c6e71" />
                     </svg>
                 </button>
-                <button type="button">
+                <button type="button" id="delete" onclick="removeNumLast()">
                     <svg class="arrow" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M0 9L7 16L8.41421 14.5858L3.829 10H18V8H3.829L8.41421 3.41421L7 2L0 9Z"
                             fill="#3c6e71" />
@@ -32,7 +33,7 @@
             </div>
         </div>
         <div class="buttons">
-            <div class="area-button"><button type="button" id="clear" onclick="">AC</button></div>
+            <div class="area-button"><button type="button" id="clear" onclick="clearAll()">AC</button></div>
             <div class="area-button"><button type="button" id="bracket" onclick="">( )</button></div>
             <div class="area-button"><button type="button" id="percent" onclick="enterOperation('%')">%</button></div>
             <div class="area-button"><button type="button" id="division" onclick="enterOperation('/')">/</button></div>

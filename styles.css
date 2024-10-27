@@ -18,11 +18,31 @@ body {
     align-items: flex-end;
     background-color: #fafafa;
     box-sizing: border-box;
+    font-size: large;
+    box-shadow: 10px 5px 5px #888888;
 }
 
-[class ^="operand-"],
+.result {
+    font-size: x-large;
+}
+
 .result {
     margin-bottom: 3vh;
+}
+
+@media screen and (max-height: 660px) and (min-width: 770px) {
+
+    #operand-previous,
+    #result-previous {
+        width: 0;
+        height: 0;
+        display: none;
+    }
+
+    .result {
+        margin-bottom: 0;
+        font-size: small;
+    }
 }
 
 .display-button {
@@ -96,6 +116,8 @@ body {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     align-items: center;
+    box-shadow: 10px 0px 5px #888888;
+
 }
 
 @media screen and (min-width: 768px) {
@@ -119,6 +141,7 @@ body {
     cursor: pointer;
     border-radius: 10px;
     font-size: 5vh;
+    box-shadow: 5px 5px 5px #888888;
 }
 
 @media screen and (min-width: 768px) {
@@ -144,6 +167,7 @@ body {
 #bracket {
     background-color: #353535;
     color: #fafafa;
+    border-color: #353535;
 }
 
 #division,
@@ -153,4 +177,5 @@ body {
 #equal {
     background-color: #3c6e71;
     color: #fafafa;
+    border-color: #3c6e71;
 }
