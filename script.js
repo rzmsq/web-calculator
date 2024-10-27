@@ -1,50 +1,165 @@
-var num1 = new String();
-var num2 = new String();
-var operation = new String();
-var result;
+class Calculator {
+    #num1;
+    #num2;
+    #result;
+    #operation;
+    #isNum1 = true;
 
-var isNum1 = true;
+    constructor(num1, num2, operation) {
+        this.#num1 = num1;
+        this.#num2 = num2;
+        this.#operation = operation;
+    }
+
+    #add() {
+        this.#result = parseFloat(this.#num1) + parseFloat(this.#num2);
+    }
+
+    #subtract() {
+        this.#result = parseFloat(this.#num1) - parseFloat(this.#num2);
+    }
+
+    #multiply() {
+        this.#result = parseFloat(this.#num1) * parseFloat(this.#num2);
+    }
+
+    #divide() {
+        this.#result = parseFloat(this.#num1) / parseFloat(this.#num2);
+    }
+
+    calculate() {
+        switch (this.#operation) {
+            case '+':
+                this.#add();
+                break;
+            case '-':
+                this.#subtract();
+                break;
+            case '*':
+                this.#multiply();
+                break;
+            case '/':
+                this.#divide();
+                break;
+            default:
+                throw new Error('Invalid operation');
+        }
+    }
+
+    delLastN() {
+        if (this.#isNum1) {
+            this.#num1 = this.#num1.toString().substring(0, this.#num1.toString().length - 1);
+        } else {
+            this.#num2 = this.#num2.toString().substring(0, this.#num2.toString().length - 1);
+        }
+    }
+
+    isHaveOperation() {
+        return this.#operation !== '';
+    }
+
+    clearData() {
+        this.#num1 = '';
+        this.#num2 = '';
+        this.#operation = '';
+        this.#result = '';
+    }
+
+    set setNum1(num1) {
+        this.#num1 = num1;
+    }
+
+    set setNum2(num2) {
+        this.#num2 = num2;
+    }
+
+    set setOperation(operation) {
+        this.#operation = operation;
+    }
+
+    set setResult(result) {
+        this.#result = result;
+    }
+
+    set setIsNum1(isNum1) {
+        this.#isNum1 = isNum1;
+    }
+
+    get getNum1() {
+        return this.#num1;
+    }
+
+    get getNum2() {
+        return this.#num2;
+    }
+
+    get getOperation() {
+        return this.#operation;
+    }
+
+    get getResult() {
+        return this.#result;
+    }
+
+    get getIsNum1() {
+        return this.#isNum1;
+    }
+}
+
+var calc = new Calculator("", "", "");
+var current = () => document.getElementById("operand-current").textContent;
+
+function replaceOperation() {
+    document.getElementById("operand-current").innerHTML = calc.getNum1 + ' ' +
+        calc.getOperation + ' ' + calc.getNum2;
+}
+
+// function changeSign() {
+//     if (isNum1) {
+//         calc.setNum1 = calc.getNum1.charAt(0) == '-' ? calc.getNum1.substring(1) : '-' + calc.getNum1;
+//         displayNum1();
+//     } else {
+//         clearOperation();
+//         calc.setOperation = calc.getOperation == '-' ? '+' : '-';
+//         replaceOperation();
+//         calculate();
+//     }
+// }
 
 function clearNum2() {
-    let current = document.getElementById("operand-current").textContent;
-    document.getElementById("operand-current").innerHTML = num2 == "" ?
-        current.substring(0, current.length - 2) + ' ' :
-        current.substring(0, current.length - 2);
+    document.getElementById("operand-current").innerHTML = calc.getNum2 == "" ?
+        current().substring(0, current().length - 2) + ' ' :
+        current().substring(0, current().length - 2);
 
     document.getElementById("result").innerHTML = '';
 }
 
 function clearOperation() {
-    operation = "";
-    let current = document.getElementById("operand-current").textContent;
+    calc.setOperation = "";
     document.getElementById("operand-current").innerHTML =
-        current.substring(0, current.length - 3);;
+        current().substring(0, current().length - 3);;
 }
 
 function removeNumLast() {
-    if (operation == "") {
-        if (num1 !== "") {
-            num1 = num1.slice(0, -1);
+    if (calc.getOperation == "") {
+        if (calc.getNum1.toString() !== "") {
+            calc.delLastN();
             displayNum1();
         }
-    } else if (num2 != "") {
-        num2 = num2.substring(0, num2.length - 1);
-        console.log(num2);
+    } else if (calc.getNum2.toString() !== "") {
+        calc.delLastN();
         clearNum2();
         displayNum2AndCalc();
     } else {
         clearOperation();
         clearResult()
-        isNum1 = true;
+        calc.setIsNum1 = true;
     }
 }
 
 function clearAll() {
-    num1 = "";
-    num2 = "";
-    operation = "";
-    result = "";
-    isNum1 = true;
+    calc.clearData();
+    calc.setIsNum1 = true;
     document.getElementById("operand-current").innerHTML = '';
     document.getElementById("result").innerHTML = '';
     document.getElementById("result-previous").innerHTML = '';
@@ -52,115 +167,97 @@ function clearAll() {
 }
 
 function enterNum(num) {
-    if (isNum1) {
-        if (num == '0' && num1 == "0") {
+    if (calc.getIsNum1) {
+        if (num == '0' && calc.getNum1 == "0") {
             return;
         }
-        num1 += num;
+        calc.setNum1 = calc.getNum1 + num;
         displayNum1();
     } else {
-        if (num == '0' && num2 == "0") {
+        if (num == '0' && calc.getNum2 == "0") {
             return;
         }
-        num2 += num;
+        calc.setNum2 = calc.getNum2 + num;
         displayNum2AndCalc();
     }
 }
 
 function clearResult() {
-    result = "";
+    calc.setResult = "";
     document.getElementById("result").innerHTML = '';
 }
 
-function calculateAndSetNum1(params) {
+function calculateAndSetNum1() {
     calculate();
-    num1 = result;
-    num2 = "";
+    calc.setNum1 = calc.getResult;
+    calc.setNum2 = "";
     displayNum1();
     clearResult();
 }
-function checkOperAndInitOperation(oper) {
+
+function initOperation(oper) {
     if (oper === '/') {
-        operation = '/';
+        calc.setOperation = '/';
     } else if (oper === '*') {
-        operation = '*';
+        calc.setOperation = '*';
     } else if (oper === '-') {
-        operation = '-';
+        calc.setOperation = '-';
     } else if (oper === '+') {
-        operation = '+';
+        calc.setOperation = '+';
     } else if (oper === '%') {
-        operation = '%';
+        calc.setOperation = '%';
     }
 }
 
 function enterOperation(oper) {
-    if (num1 === "") {
+    if (calc.getNum1 === "") {
         return
     }
 
-    if (operation != "" && num2 === "") {
-        displayPreviouse();
-        operation = oper;
-        displayOper(false);
+    if (calc.getOperation != "" && calc.getNum2 === "") {
+        calc.setOperation = oper;
+        displayOper();
         return;
-    } else if (operation != "" && num2 !== "") {
+    } else if (calc.getOperation != "" && calc.getNum2 !== "") {
         displayPreviouse();
         calculateAndSetNum1();
     }
 
-    checkOperAndInitOperation(oper);
-    isNum1 = false;
-    displayOper(true);
+    initOperation(oper);
+    calc.setIsNum1 = false;
+    displayOper();
 }
 
 function displayNum1() {
-    document.getElementById("operand-current").innerHTML = num1;
+    document.getElementById("operand-current").innerHTML = calc.getNum1;
 }
 
 function displayNum2AndCalc() {
-    if (num2 === "") {
+    if (calc.getNum2 === "") {
         return;
     }
-    document.getElementById("operand-current").textContent += num2.at(-1);
+    document.getElementById("operand-current").textContent += calc.getNum2.at(-1);
     calculate();
 }
 
-function displayOper(isConcate) {
-    if (isConcate) {
-        document.getElementById("operand-current").textContent += ' ' + operation + ' ';
-    } else {
-        let current = document.getElementById("operand-current").textContent;
-        document.getElementById("operand-current").innerHTML = current.substring(0, current.length - 2) + operation + ' ';
-    }
+function displayOper() {
+    document.getElementById("operand-current").innerHTML = current().substring(0, calc.getNum1.toString().length) + ' ' + calc.getOperation + ' ';
 }
 
 function displayPreviouse() {
     document.getElementById("result-previous").innerHTML = document.getElementById("result").innerHTML;
-    document.getElementById("operand-previous").innerHTML = num1 + ' ' + operation + ' ' + num2;
+    document.getElementById("operand-previous").innerHTML = calc.getNum1 + ' ' + calc.getOperation + ' ' + calc.getNum2;
 }
 
 function calculate() {
-    if (num1 === "" || num2 === "") {
+    if (calc.getNum1 === "" || calc.getNum2 === "") {
         return;
     }
-    checkOperAndCalc();
+    calc.calculate();
     displayResult(result);
-    isNum1 = false;
-}
-
-function checkOperAndCalc() {
-    if (operation === '/') {
-        result = parseFloat(num1) / parseFloat(num2);
-    } else if (operation === '*') {
-        result = parseFloat(num1) * parseFloat(num2);
-    } else if (operation === '-') {
-        result = parseFloat(num1) - parseFloat(num2);
-    } else if (operation === '+') {
-        result = parseFloat(num1) + parseFloat(num2);
-    } else if (operation === '%') {
-    }
+    calc.setIsNum1 = false;
 }
 
 function displayResult(result) {
-    document.getElementById("result").innerHTML = '= ' + result;
+    document.getElementById("result").innerHTML = '= ' + calc.getResult;
 }
