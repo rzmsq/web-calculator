@@ -27,6 +27,10 @@ class Calculator {
         this.#result = parseFloat(this.#num1) / parseFloat(this.#num2);
     }
 
+    #percent() {
+        this.#result = this.#num1 / 100;
+    }
+
     calculate() {
         switch (this.#operation) {
             case '+':
@@ -40,6 +44,9 @@ class Calculator {
                 break;
             case '/':
                 this.#divide();
+                break;
+            case '%':
+                this.#percent();
                 break;
             default:
                 throw new Error('Invalid operation');
@@ -216,7 +223,11 @@ function enterOperation(oper) {
 
     if (calc.getOperation != "" && calc.getNum2 === "") {
         calc.setOperation = oper;
-        displayOper();
+        if (oper != '%') {
+            displayOper();
+        } else {
+            calculateAndSetNum1();
+        }
         return;
     } else if (calc.getOperation != "" && calc.getNum2 !== "") {
         displayPreviouse();
@@ -225,7 +236,11 @@ function enterOperation(oper) {
 
     initOperation(oper);
     calc.setIsNum1 = false;
-    displayOper();
+    if (oper != '%') {
+        displayOper();
+    } else {
+        calculateAndSetNum1();
+    }
 }
 
 function displayNum1() {
@@ -250,7 +265,7 @@ function displayPreviouse() {
 }
 
 function calculate() {
-    if (calc.getNum1 === "" || calc.getNum2 === "") {
+    if (calc.getNum1 === "" || (calc.getNum2 === "" && calc.getOperation !== '%')) {
         return;
     }
     calc.calculate();
